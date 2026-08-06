@@ -1,5 +1,5 @@
 # Sistema de Gestión de Bibliotecas Universitarias
-## Integrantes: Jeronimo Andres Mateo Bazan Rojas - , Paula Lizeth Ardila Pinzon - 2243586, Sebastian Andres Baldovino Suarez - 2243565, Santiago Sepúlveda Blanco - 2243557.
+## Integrantes: Jeronimo Andres Mateo Bazan Rojas - 2243590, Paula Lizeth Ardila Pinzon - 2243586, Sebastian Andres Baldovino Suarez - 2243565, Santiago Sepúlveda Blanco - 2243557.
 ## 1. Definiciones relevantes
 ### Biblioteca
 Es la unidad donde se administran y prestan los recursos bibliográficos. Una universidad puede tener una o varias bibliotecas.
