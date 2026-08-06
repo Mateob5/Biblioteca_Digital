@@ -1,0 +1,70 @@
+# Sistema de Gestión de Bibliotecas Universitarias
+
+## Integrantes: Jeronimo Andres Mateo Bazan Rojas - , Paula Lizeth Ardila Pinzon - 2243586, Sebastian Andres Baldovino Suarez - 2243565, Santiago Sepúlveda Blanco - 2243557.
+
+## 1. Definiciones relevantes
+
+### Biblioteca
+Es la unidad donde se administran y prestan los recursos bibliográficos. Una universidad puede tener una o varias bibliotecas.
+
+### Universidad
+Institución educativa a la que pertenece una o más bibliotecas dentro de la plataforma.
+
+### Usuario
+Persona registrada en el sistema que puede consultar, reservar y solicitar préstamos de los recursos. Puede ser estudiante, docente o personal administrativo.
+
+### Recurso bibliográfico
+Cualquier material disponible para consulta o préstamo, como libros, revistas, periódicos, tesis o material audiovisual.
+
+### Ejemplar
+Es una copia física o digital de un recurso bibliográfico. Un mismo libro puede tener varios ejemplares disponibles.
+
+### Catálogo
+Conjunto organizado de todos los recursos registrados en la biblioteca, con información como título, autor, editorial, categoría e ISBN.
+
+### Préstamo
+Proceso mediante el cual un usuario retira un ejemplar por un tiempo determinado.
+
+### Renovación
+Extensión del período de préstamo de un recurso, siempre que no existan restricciones como reservas pendientes.
+
+### Auto renovación
+Proceso automático que renueva un préstamo cuando se cumplen las condiciones establecidas por la biblioteca.
+
+### Reserva
+Solicitud realizada por un usuario para apartar un recurso que no se encuentra disponible en ese momento.
+
+### Devolución
+Proceso mediante el cual el usuario entrega nuevamente el ejemplar prestado a la biblioteca.
+
+### Multa
+Cargo aplicado cuando un recurso es devuelto después de la fecha límite de préstamo.
+
+---
+
+## 2. Tendencias actuales en dichos conceptos
+
+### Bibliotecas digitales
+Las universidades están ampliando el acceso a libros electrónicos, revistas científicas y otros recursos digitales, permitiendo que los usuarios consulten el material desde cualquier lugar y dispositivo.
+
+### Automatización de préstamos y renovaciones
+Los sistemas modernos automatizan procesos como préstamos, devoluciones, renovaciones y reservas, reduciendo el trabajo manual del personal y mejorando la experiencia de los usuarios.
+
+### Integración con sistemas académicos
+Los sistemas de bibliotecas se conectan con plataformas institucionales, como sistemas de matrícula o gestión académica, para sincronizar usuarios, permisos y servicios de manera automática.
+
+### Inteligencia Artificial y recomendaciones
+La IA se utiliza para recomendar libros y recursos según el historial de préstamos, intereses o programas académicos de cada usuario, facilitando el descubrimiento de contenido relevante.
+
+### Identificación mediante RFID y códigos QR
+Muchas bibliotecas implementan tecnologías como RFID o códigos QR para agilizar el préstamo, devolución e inventario de los ejemplares, mejorando la eficiencia en la gestión de los recursos.
+
+---
+
+## 3. Herramientas existentes en el mercado
+
+### Koha
+Koha es un sistema de gestión bibliotecaria de código abierto utilizado por universidades, colegios y bibliotecas de todo el mundo. Permite administrar el catálogo de libros y otros recursos, controlar préstamos, devoluciones, reservas y renovaciones, además de gestionar usuarios y generar reportes. Al ser un software libre, puede adaptarse a las necesidades de cada institución y cuenta con una amplia comunidad que contribuye a su desarrollo.
+
+### Alma
+Alma es una plataforma comercial de gestión bibliotecaria desarrollada por Ex Libris, diseñada principalmente para bibliotecas universitarias y de investigación. Centraliza la administración de recursos físicos y digitales, automatiza procesos como préstamos, reservas y renovaciones, y facilita la integración con otros sistemas académicos. Su enfoque en la nube y sus herramientas de análisis la convierten en una solución robusta para instituciones con grandes volúmenes de información.
