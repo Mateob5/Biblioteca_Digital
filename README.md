@@ -43,3 +43,6 @@ Muchas bibliotecas implementan tecnologías como RFID o códigos QR para agiliza
 Koha es un sistema de gestión bibliotecaria de código abierto utilizado por universidades, colegios y bibliotecas de todo el mundo. Permite administrar el catálogo de libros y otros recursos, controlar préstamos, devoluciones, reservas y renovaciones, además de gestionar usuarios y generar reportes. Al ser un software libre, puede adaptarse a las necesidades de cada institución y cuenta con una amplia comunidad que contribuye a su desarrollo.
 ### Alma
 Alma es una plataforma comercial de gestión bibliotecaria desarrollada por Ex Libris, diseñada principalmente para bibliotecas universitarias y de investigación. Centraliza la administración de recursos físicos y digitales, automatiza procesos como préstamos, reservas y renovaciones, y facilita la integración con otros sistemas académicos. Su enfoque en la nube y sus herramientas de análisis la convierten en una solución robusta para instituciones con grandes volúmenes de información.
+
+
+# Primera Entrega Bases de Datos Relacionales
