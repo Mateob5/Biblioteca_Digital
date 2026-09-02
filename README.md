@@ -64,7 +64,7 @@ La plataforma debe administrar libros, revistas, periódicos, materiales audiovi
 ### 4. Integración de inteligencia artificial
 Los asistentes de investigación con IA mejoran la experiencia de búsqueda y descubrimiento, ofreciendo recomendaciones personalizadas y respuestas contextuales a las consultas de los usuarios. El personal bibliotecario debe desarrollar competencias técnicas, como el manejo de Python, para interactuar con estas herramientas y mantener los sistemas actualizados. La integración de IA también plantea desafíos en torno a la integridad científica y la transparencia de los algoritmos, aspectos que deben considerarse en el diseño de la plataforma.
 
-## Sistemas Similares y sus Funcionalidades
+### Sistemas Similares y sus Funcionalidades
 
 | Sistema               | Tipo             | Funcionalidades Clave                                                                                           |
 | --------------------- | ---------------- | --------------------------------------------------------------------------------------------------------------- |
@@ -74,7 +74,7 @@ Los asistentes de investigación con IA mejoran la experiencia de búsqueda y de
 | **FOLIO (EBSCO)**     | Código abierto   | Arquitectura moderna, microservicios, gestión de préstamos, reservas, integración con ERP universitario.        |
 | **WorldShare (OCLC)** | Comercial / Nube | Basado en WorldCat, análisis con IA, gestión de recursos electrónicos y físicos.                                |
 
-## Tecnologías de Base de Datos Recomendadas
+### Tecnologías de Base de Datos Recomendadas
 
 | Tecnología        | Uso                                                                                       |
 | ----------------- | ----------------------------------------------------------------------------------------- |
@@ -82,6 +82,6 @@ Los asistentes de investigación con IA mejoran la experiencia de búsqueda y de
 | **Redis**         | Caché para disponibilidad en tiempo real y colas de reservas.                             |
 | **Elasticsearch** | Motor de búsqueda para el catálogo en línea (OPAC).                                       |
 
-## Patrón de Diseño Clave
+### Patrón de Diseño Clave
 
 Para **varias universidades** en una sola plataforma: arquitectura **multi-tenant** (base de datos compartida con separación por `university_id` o esquemas separados), permitiendo que cada universidad gestione sus propios recursos, préstamos, reservas y auto-renovaciones de forma aislada pero centralizada.         
