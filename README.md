@@ -48,10 +48,11 @@ Alma es una plataforma comercial de gestión bibliotecaria desarrollada por Ex L
 # Primera Entrega Bases de Datos Relacionales
 
 ## 1. Contexto del problema trabajado en la actividad de exploración
+
 Las bibliotecas universitarias hoy en día se enfrentan al reto de administrar una enorme cantidad de recursos: libros, revistas, tesis y material digital para miles de usuarios distintos, como: estudiantes, profesores y personal administrativo, todo mientras intentan que los procesos de préstamo, devolución, reserva y renovación no se vuelvan un caos burocrático. El problema radica en que muchas instituciones siguen dependiendo de sistemas desactualizados o procesos manuales que no solo generan retrasos y errores, sino que tampoco se integran bien con las plataformas académicas ni aprovechan tecnologías modernas como la inteligencia artificial, los códigos QR o el acceso remoto. Por eso, la actividad de exploración consiste en analizar a fondo estas necesidades reales, entender qué funciona y qué falla en las herramientas actuales del mercado, y definir desde cero los requisitos de un sistema de gestión que realmente facilite la vida de quienes usan y administran la biblioteca universitaria.
 
 
-## Tendencias actuales 
+## 2. Tendencias actuales 
 
 ### 1. Automatización de procesos
 La tecnología RFID permite el autopréstamo y la autorenovación de materiales, eliminando la intervención del personal bibliotecario. Este modelo ha alcanzado tasas de uso superiores al 80% en sistemas ya implementados.
@@ -66,6 +67,7 @@ La plataforma debe administrar libros, revistas, periódicos, materiales audiovi
 Los asistentes de investigación con IA mejoran la experiencia de búsqueda y descubrimiento. El personal bibliotecario debe desarrollar competencias técnicas, como el manejo de Python, para interactuar con estas herramientas.
 
 
+## 3. Consulta de herramientas o sistemas similares con su análisis de funcionalidades
 ### Sistemas Similares y sus Funcionalidades
 
 | Sistema               | Tipo             | Funcionalidades Clave                                                                                           |
