@@ -91,4 +91,4 @@ Los asistentes de investigación con IA mejoran la experiencia de búsqueda y de
 Para **varias universidades** en una sola plataforma: arquitectura **multi-tenant** (base de datos compartida con separación por `university_id` o esquemas separados), permitiendo que cada universidad gestione sus propios recursos, préstamos, reservas y auto-renovaciones de forma aislada pero centralizada.
 
 # Diagrama Modelo ER
-![ModeloER](./DiagramaBDLibrary.png)
+![ModeloER](DiagramaBDLibrary.png)
