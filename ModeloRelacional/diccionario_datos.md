@@ -1,6 +1,6 @@
 # Diccionario de Datos – Modelo Relacional
 
-## Integrantes
+##  Integrantes
 - Jeronimo Andres Mateo Bazan Rojas - 2243590
 - Paula Lizeth Ardila Pinzon - 2243586
 - Sebastian Andres Baldovino Suarez - 2243565
@@ -41,7 +41,7 @@ Este documento describe el **diccionario de datos** del modelo relacional del Si
 | ciudad | VARCHAR(100) | | Ciudad |
 | pais | VARCHAR(100) | NOT NULL, DEFAULT 'Colombia' | País |
 | estado | VARCHAR(20) | NOT NULL, DEFAULT 'ACTIVA', CHECK IN ('ACTIVA','INACTIVA') | Estado de la universidad |
-| fecha_creacion | TIMESTAMP | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha de registro |
+| fecha_creacion | DATE | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha de registro |
 
 ---
 
@@ -108,7 +108,7 @@ Este documento describe el **diccionario de datos** del modelo relacional del Si
 | apellidos | VARCHAR(100) | NOT NULL | Apellidos |
 | direccion | VARCHAR(200) | | Dirección |
 | estado | VARCHAR(20) | NOT NULL, DEFAULT 'ACTIVO', CHECK IN ('ACTIVO','INACTIVO','SUSPENDIDO') | Estado |
-| fecha_registro | TIMESTAMP | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha de registro |
+| fecha_registro | DATE | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha de registro |
 | | | UNIQUE (id_universidad, documento) | Documento único por universidad |
 
 ---
@@ -195,7 +195,7 @@ Este documento describe el **diccionario de datos** del modelo relacional del Si
 | anio_publicacion | INT | CHECK >= 1000 | Año de publicación |
 | descripcion | TEXT | | Descripción |
 | numero_paginas | INT | CHECK > 0 | Número de páginas |
-| fecha_creacion | TIMESTAMP | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha de registro |
+| fecha_creacion | DATE | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha de registro |
 | | | UNIQUE (id_universidad, isbn) | ISBN único por universidad |
 
 ---
@@ -246,7 +246,7 @@ Este documento describe el **diccionario de datos** del modelo relacional del Si
 | tipo_ejemplar | VARCHAR(20) | NOT NULL, CHECK IN ('FISICO','DIGITAL') | Tipo |
 | estado | VARCHAR(30) | NOT NULL, DEFAULT 'DISPONIBLE', CHECK IN ('DISPONIBLE','PRESTADO','RESERVADO','MANTENIMIENTO','BAJA') | Estado |
 | fecha_adquisicion | DATE | | Fecha de adquisición |
-| precio_reposicion | FLOAT | CHECK >= 0 | Precio de reposición |
+| precio_reposicion | NUMERIC(12,2) | CHECK >= 0 | Precio de reposición |
 | rfid | VARCHAR(50) | UNIQUE | Código RFID |
 | | | UNIQUE (id_biblioteca, codigo_barras) | Código único por biblioteca |
 
@@ -259,8 +259,8 @@ Este documento describe el **diccionario de datos** del modelo relacional del Si
 | id_prestamo | INT | PK | Identificador del préstamo |
 | id_usuario | INT | FK → usuario | Usuario |
 | id_ejemplar | INT | FK → ejemplar | Ejemplar |
-| fecha_prestamo | TIMESTAMP | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha de préstamo |
-| fecha_vencimiento | TIMESTAMP | NOT NULL | Fecha límite |
+| fecha_prestamo | DATE | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha de préstamo |
+| fecha_vencimiento | DATE | NOT NULL | Fecha límite |
 | estado | VARCHAR(20) | NOT NULL, DEFAULT 'ACTIVO', CHECK IN ('ACTIVO','VENCIDO','DEVUELTO','RENOVADO','PERDIDO') | Estado |
 | observaciones | TEXT | | Observaciones |
 | | | CHECK (fecha_vencimiento > fecha_prestamo) | Validación de fechas |
@@ -273,9 +273,9 @@ Este documento describe el **diccionario de datos** del modelo relacional del Si
 |---|---|---|---|
 | id_renovacion | INT | PK | Identificador |
 | id_prestamo | INT | FK → prestamo, ON DELETE CASCADE | Préstamo |
-| fecha_renovacion | TIMESTAMP | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha de renovación |
-| fecha_vencimiento_anterior | TIMESTAMP | NOT NULL | Vencimiento anterior |
-| fecha_vencimiento_nueva | TIMESTAMP | NOT NULL | Nuevo vencimiento |
+| fecha_renovacion | DATE | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha de renovación |
+| fecha_vencimiento_anterior | DATE | NOT NULL | Vencimiento anterior |
+| fecha_vencimiento_nueva | DATE | NOT NULL | Nuevo vencimiento |
 | tipo | VARCHAR(20) | NOT NULL, CHECK IN ('MANUAL','AUTOMATICA') | Tipo |
 | | | CHECK (fecha_vencimiento_nueva > fecha_vencimiento_anterior) | Validación |
 
@@ -287,22 +287,22 @@ Este documento describe el **diccionario de datos** del modelo relacional del Si
 |---|---|---|---|
 | id_devolucion | INT | PK | Identificador |
 | id_prestamo | INT | NOT NULL, UNIQUE, FK → prestamo | Préstamo |
-| fecha_devolucion | TIMESTAMP | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha |
+| fecha_devolucion | DATE | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha |
 | estado_ejemplar | VARCHAR(30) | NOT NULL, CHECK IN ('BUENO','DETERIORADO','PERDIDO') | Estado |
 | id_biblioteca_recepcion | INT | FK → biblioteca | Biblioteca que recibe |
 | observaciones | TEXT | | Observaciones |
 
 ---
 
-## 21. Tabla: `reserva`
+## 21. Tabla: `reserva` 
 
 | Columna | Tipo | Restricción | Descripción |
 |---|---|---|---|
 | id_reserva | INT | PK | Identificador |
 | id_usuario | INT | FK → usuario | Usuario |
 | id_recurso | INT | FK → recurso | Recurso |
-| fecha_reserva | TIMESTAMP | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha |
-| fecha_expiracion | TIMESTAMP | | Expiración |
+| fecha_reserva | DATE | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha |
+| fecha_expiracion | DATE | | Expiración |
 | estado | VARCHAR(20) | NOT NULL, DEFAULT 'PENDIENTE', CHECK IN ('PENDIENTE','DISPONIBLE','CUMPLIDA','CANCELADA','EXPIRADA') | Estado |
 | posicion_cola | INT | CHECK > 0 | Posición en cola |
 
@@ -316,8 +316,8 @@ Este documento describe el **diccionario de datos** del modelo relacional del Si
 | id_prestamo | INT | FK → prestamo | Préstamo |
 | monto | FLOAT | NOT NULL, CHECK > 0 | Monto |
 | motivo | VARCHAR(200) | NOT NULL | Motivo |
-| fecha_generacion | TIMESTAMP | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha |
-| fecha_pago | TIMESTAMP | | Fecha de pago |
+| fecha_generacion | DATE | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Fecha |
+| fecha_pago | DATE | | Fecha de pago |
 | estado | VARCHAR(20) | NOT NULL, DEFAULT 'PENDIENTE', CHECK IN ('PENDIENTE','PAGADA','CONDONADA','ANULADA') | Estado |
 
 ---
@@ -385,6 +385,8 @@ Este documento describe el **diccionario de datos** del modelo relacional del Si
 
 ## Referencias
 
-- Elmasri, R., & Navathe, S. (2016). *Fundamentals of Database Systems* (7th ed.). Pearson.
-- Silberschatz, A., Korth, H., & Sudarshan, S. (2019). *Database System Concepts* (7th ed.). McGraw-Hill.
-- Date, C. J. (2003). *An Introduction to Database Systems* (8th ed.). Addison-Wesley.
+- DataSunrise. (s.f.). Diccionario de base de datos. DataSunrise. Recuperado el 6 de octubre de 2026, de https://www.datasunrise.com/es/centro-de-conocimiento/diccionario-de-base-de-datos/ 
+
+- Harvard University. (s.f.). Data dictionary. Harvard Medical School, Data Management. Recuperado el 6 de octubre de 2026, de https://datamanagement.hms.harvard.edu/collect-analyze/documentation-metadata/data-dictionary
+
+- Olaya, V. (2014). Bases de datos. En Sistemas de información geográfica (cap. 3). Recuperado el 6 de octubre de 2026, de https://volaya.github.io/libro-sig/chapters/Bases_datos.html
