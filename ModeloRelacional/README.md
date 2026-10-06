@@ -22,7 +22,7 @@ La normalización se llevó hasta **Quinta Forma Normal (5FN)**, garantizando qu
 
 | Archivo | Descripción |
 |---|---|
-| [`ModeloRelacionalBibliotecaDigital.png`](./ModeloRelacional/ModeloRelacionalBibliotecaDigital.png) | Diagrama visual del modelo relacional. Exportado desde Mermaid, dbdiagram.io o draw.io. Muestra las tablas, claves primarias, claves foráneas y relaciones. |
+| [`ModeloRelacionalBibliotecaDigital.png`](./ModeloRelacionalBibliotecaDigital.png) | Diagrama visual del modelo relacional. Exportado desde Mermaid, dbdiagram.io o draw.io. Muestra las tablas, claves primarias, claves foráneas y relaciones. |
 | [`informe_normalizacion.md`](./informe_normalizacion.md) | Informe detallado del proceso de normalización: 1FN, 2FN, 3FN, BCNF, 4FN y 5FN. Explica los cambios realizados respecto al modelo E-R inicial y justifica cada decisión. |
 | [`diccionario_datos.md`](./diccionario_datos.md) | Diccionario de datos con el dominio o tipo de dato permitido en cada columna de cada tabla. Incluye restricciones y descripción de cada campo. |
 
