@@ -30,7 +30,7 @@ La normalización se llevó hasta **Quinta Forma Normal (5FN)**, garantizando qu
 
 ## Enlaces directos
 
-- [Ver diagrama relacional](./diagrama_relacional.png)
+- [Ver diagrama relacional](./ModeloRelacionalBibliotecaDigital.png)
 - [Ver informe de normalización](./informe_normalizacion.md)
 - [Ver diccionario de datos](./diccionario_datos.md)
 
