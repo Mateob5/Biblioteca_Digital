@@ -18,7 +18,7 @@ El presente informe documenta el proceso de normalización aplicado al modelo re
 - Garantizar la integridad de los datos.
 - Facilitar el mantenimiento y la escalabilidad del sistema.
 
-El modelo final está compuesto por **22 tablas** y soporta un entorno **multi-tenant** (varias universidades en una misma plataforma).
+El modelo final está compuesto por **24 tablas** (se añadieron los catálogos `pais` e `idioma`) y soporta un entorno **multi-tenant** (varias universidades en una misma plataforma).
 
 ---
 
@@ -72,8 +72,8 @@ recurso(id_recurso, titulo, autores)
 Se separa el campo multivaluado en una tabla intermedia `recurso_autor` y se crea la tabla `autor`:
 
 ```sql
-recurso(id_recurso, titulo, ...)              
-autor(id_autor, nombres, apellidos, ...)              
+recurso(id_recurso, titulo, ...)                              
+autor(id_autor, nombres, apellidos, ...)                              
 recurso_autor(id_recurso, id_autor, orden)
 ```
 
@@ -154,7 +154,7 @@ recurso_autor(id_recurso, id_autor, titulo_recurso, orden)
 Se elimina `titulo_recurso` de `recurso_autor` y se deja en `recurso`:
 
 ```sql
-recurso(id_recurso, titulo, ...)              
+recurso(id_recurso, titulo, ...)                              
 recurso_autor(id_recurso, id_autor, orden)
 ```
 
@@ -222,7 +222,7 @@ usuario(id_usuario, nombres, id_tipo_usuario, max_prestamos, dias_prestamo)
 Se separa `tipo_usuario`:
 
 ```sql
-usuario(id_usuario, nombres, id_tipo_usuario)              
+usuario(id_usuario, nombres, id_tipo_usuario)                              
 tipo_usuario(id_tipo_usuario, nombre, max_prestamos, dias_prestamo)
 ```
 
@@ -311,7 +311,7 @@ prestamo(id_prestamo, id_usuario, id_ejemplar, id_biblioteca, fecha_prestamo)
 Se elimina `id_biblioteca` de `prestamo`. La biblioteca se obtiene vía `ejemplar`:
 
 ```sql
-prestamo(id_prestamo, id_usuario, id_ejemplar, fecha_prestamo)              
+prestamo(id_prestamo, id_usuario, id_ejemplar, fecha_prestamo)                              
 ejemplar(id_ejemplar, id_recurso, id_biblioteca, ...)
 ```
 
@@ -337,6 +337,29 @@ ejemplar(id_ejemplar, id_recurso, id_biblioteca, ...)
 
 
 **Nota:** Esta misma descomposición elimina la dependencia `id_ejemplar → id_biblioteca` que se analiza en la sección de BCNF. Por eso, en BCNF no se repetirá el cambio, solo se verificará que el modelo ya cumple.
+
+---
+
+### Ejemplo 4 antes de 3FN: Dependencias de texto (País e Idioma)
+
+En iteraciones iniciales del modelo, se tenían campos de texto como `pais VARCHAR` en `universidad` y `editorial`, `nacionalidad VARCHAR` en `autor_nacionalidad` e `idioma VARCHAR` en `recurso_idioma`.
+
+**Problema:** Almacenar estos valores como texto (`VARCHAR`) genera redundancia y anomalías de actualización (ej. si se escribe "Colombia" o "colombia", o si el país cambia de nombre). El dato depende funcionalmente de un texto que no está centralizado.
+
+### Aplicación de 3FN (y BCNF)
+
+Se crearon las tablas maestras `pais` e `idioma`, y se reemplazaron los textos por llaves foráneas (`id_pais`, `id_idioma`):
+
+```sql
+pais(id_pais, nombre)            
+idioma(id_idioma, nombre)            
+universidad(..., id_pais INT FK)            
+editorial(..., id_pais INT FK)            
+autor_nacionalidad(..., id_pais INT FK)            
+recurso_idioma(..., id_idioma INT FK)
+```
+
+Esto garantiza la integridad referencial y elimina la dependencia transitiva de los textos.
 
 ### Conclusión parcial
 
@@ -366,7 +389,7 @@ En la tabla original `prestamo`, `id_ejemplar` **no era clave candidata**, porqu
 Sin embargo, esa misma dependencia ya fue eliminada al aplicar **3FN**, cuando se movió `id_biblioteca` de `prestamo` a `ejemplar`:
 
 ```sql
-prestamo(id_prestamo, id_usuario, id_ejemplar, fecha_prestamo)    
+prestamo(id_prestamo, id_usuario, id_ejemplar, fecha_prestamo)                    
 ejemplar(id_ejemplar, id_recurso, id_biblioteca, ...)
 ```
 
@@ -394,7 +417,7 @@ profesor → asignatura
 Claves candidatas: `(alumno, asignatura)` y `(alumno, profesor)`. La tabla está en 3FN porque `asignatura` es un atributo primo. Sin embargo, no está en BCNF porque `profesor` no es superclave. Se descompone en:
 
 ```sql
-profesor_asignatura(profesor, asignatura)    
+profesor_asignatura(profesor, asignatura)                    
 alumno_profesor(alumno, profesor)
 ```
 
@@ -451,7 +474,7 @@ Al almacenar todo en una sola tabla, se generan **6 filas** (2 × 3) por combina
 Se separan los contactos en una tabla `usuario_contacto`:
 
 ```sql
-usuario(id_usuario, nombres, ...)              
+usuario(id_usuario, nombres, ...)                              
 usuario_contacto(id_contacto_usr, id_usuario, tipo_contacto, valor, es_principal)
 ```
 
@@ -488,8 +511,8 @@ usuario_contacto(id_contacto_usr, id_usuario, tipo_contacto, valor, es_principal
 | `universidad`  | `id_universidad →→ telefono`, `id_universidad →→ correo` | `universidad_contacto`    |
 | `biblioteca`   | `id_biblioteca →→ telefono`, `id_biblioteca →→ correo`   | `biblioteca_contacto`     |
 | `editorial`    | `id_editorial →→ telefono`, `id_editorial →→ correo`     | `editorial_contacto`      |
-| `autor`        | `id_autor →→ nacionalidad`                                   | `autor_nacionalidad`      |
-| `recurso`      | `id_recurso →→ idioma`                                       | `recurso_idioma`          |
+| `autor`        | `id_autor →→ id_pais`                                        | `autor_nacionalidad`      |
+| `recurso`      | `id_recurso →→ id_idioma`                                    | `recurso_idioma`          |
 | `recurso`      | `id_recurso →→ (formato, url)`                               | `recurso_formato_digital` |
 
 
@@ -549,8 +572,8 @@ Es decir, se puede descomponer en tres tablas binarias sin pérdida de informaci
 Se descompone en tres tablas:
 
 ```sql
-proveedor_recurso(id_proveedor, id_recurso)              
-recurso_biblioteca(id_recurso, id_biblioteca)              
+proveedor_recurso(id_proveedor, id_recurso)                              
+recurso_biblioteca(id_recurso, id_biblioteca)                              
 proveedor_biblioteca(id_proveedor, id_biblioteca)
 ```
 
@@ -593,7 +616,7 @@ Al reunir estas tres tablas se reproduce exactamente la tabla original `proveedo
 En el modelo del Sistema de Gestión de Bibliotecas Universitarias **no se creó ninguna tabla que mezcle tres relaciones independientes**. Por el contrario, se separaron:
 
 - `recurso_autor(id_recurso, id_autor, orden)`
-- `recurso_idioma(id_recurso_idioma, id_recurso, idioma, es_principal)`
+- `recurso_idioma(id_recurso_idioma, id_recurso, id_idioma, es_principal)`
 - `recurso_formato_digital(id_formato, id_recurso, formato, url, tamano_mb)`
 - `usuario_contacto`, `universidad_contacto`, `biblioteca_contacto`, `editorial_contacto`
 - `autor_nacionalidad`
@@ -616,8 +639,14 @@ Todas las tablas del modelo cumplen 5FN.
 | Se creó `recurso_autor`                                       | Normalizar la relación muchos-a-muchos entre recurso y autor                                                                           | 1FN y 2FN    |
 | Se eliminó `id_usuario` en `multa`                            | Evitar dependencia transitiva; se obtiene vía `prestamo`                                                                               | 3FN          |
 | Se eliminó `id_biblioteca` en `prestamo`                      | Evitar dependencia transitiva y, a la vez, eliminar un determinante que no es clave candidata; la biblioteca se obtiene vía `ejemplar` | 3FN / BCNF   |
+| **Se agregó tabla `pais`**                                    | **Normalizar país en universidad, editorial y autor**                                                                                  | **3FN**      |
+| **Se agregó tabla `idioma`**                                  | **Normalizar idioma en recurso_idioma**                                                                                                 | **3FN**      |
 | Se agregó `id_universidad` en `recurso`                       | Soportar el enfoque multi-tenant                                                                                                        | Diseño      |
 | Se agregó `rfid` en `ejemplar`                                | Permitir autopréstamo y autorenovación                                                                                                | Diseño      |
+| **Se agregó `es_prestable` en `recurso`**                     | **Diferenciar material de consulta en sala de préstamo a domicilio (Requerimiento)**                                                   | **Diseño**  |
+| **Se agregó `volumen` y `numero_edicion` en `ejemplar`**      | **Soportar el préstamo de revistas y periódicos (Requerimiento)**                                                                     | **Diseño**  |
+| **Se agregó `id_biblioteca` en `reserva`**                    | **Indicar la sede física de recogida del recurso reservado (Requerimiento)**                                                           | **Diseño**  |
+| **Se agregó `es_automatica` en `renovacion`**                 | **Cumplir con la funcionalidad de auto-renovación (Requerimiento)**                                                                    | **Diseño**  |
 | Se agregó `posicion_cola` en `reserva`                        | Gestionar colas de reserva                                                                                                              | Diseño      |
 | Se agregó `fecha_expiracion` en `reserva`                     | Controlar expiración automática de reservas                                                                                           | Diseño      |
 | Se crearon tablas `*_contacto`                                 | Resolver dependencias multivaluadas                                                                                                     | 4FN          |
@@ -633,7 +662,7 @@ Todas las tablas del modelo cumplen 5FN.
 
 El modelo relacional del **Sistema de Gestión de Bibliotecas Universitarias** cumple con las formas normales **1FN, 2FN, 3FN, BCNF, 4FN y 5FN**. Se eliminaron redundancias, dependencias parciales, dependencias transitivas, dependencias multivaluadas y dependencias de reunión. Se garantizó la integridad referencial mediante claves primarias y foráneas.
 
-El modelo está preparado para soportar un entorno **multi-tenant**, con gestión de múltiples universidades, bibliotecas, usuarios, recursos, ejemplares, préstamos, renovaciones, reservas, devoluciones y multas.
+El modelo está preparado para soportar un entorno **multi-tenant**, con gestión de múltiples universidades, bibliotecas, usuarios, recursos, ejemplares, préstamos, renovaciones (manuales y automáticas), reservas (con indicación de sede física), devoluciones y multas.
 
 ---
 

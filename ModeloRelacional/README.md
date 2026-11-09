@@ -1,6 +1,7 @@
 # Modelo Relacional – Sistema de Gestión de Bibliotecas Universitarias
 
 ## Integrantes
+
 - Jeronimo Andres Mateo Bazan Rojas - 2243590
 - Paula Lizeth Ardila Pinzon - 2243586
 - Sebastian Andres Baldovino Suarez - 2243565
@@ -20,11 +21,13 @@ La normalización se llevó hasta **Quinta Forma Normal (5FN)**, garantizando qu
 
 ## Contenido de la carpeta
 
-| Archivo | Descripción |
-|---|---|
-| [`ModeloRelacionalBibliotecaDigital.png`](./ModeloRelacionalBibliotecaDigital.png) | Diagrama visual del modelo relacional. Exportado desde Mermaid, dbdiagram.io o draw.io. Muestra las tablas, claves primarias, claves foráneas y relaciones. |
-| [`informe_normalizacion.md`](./informe_normalizacion.md) | Informe detallado del proceso de normalización: 1FN, 2FN, 3FN, BCNF, 4FN y 5FN. Explica los cambios realizados respecto al modelo E-R inicial y justifica cada decisión. |
-| [`diccionario_datos.md`](./diccionario_datos.md) | Diccionario de datos con el dominio o tipo de dato permitido en cada columna de cada tabla. Incluye restricciones y descripción de cada campo. |
+
+| Archivo                                                                            | Descripción                                                                                                                                                               |
+|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`ModeloRelacionalBibliotecaDigital.png`](./ModeloRelacionalBibliotecaDigital.png) | Diagrama visual del modelo relacional. Muestra las tablas, claves primarias, claves foráneas y relaciones.                                                                |
+| [`informe_normalizacion.md`](./informe_normalizacion.md)                           | Informe detallado del proceso de normalización: 1FN, 2FN, 3FN, BCNF, 4FN y 5FN. Explica los cambios realizados respecto al modelo E-R inicial y justifica cada decisión. |
+| [`diccionario_datos.md`](./diccionario_datos.md)                                   | Diccionario de datos con el dominio o tipo de dato permitido en cada columna de cada tabla. Incluye restricciones y descripción de cada campo.                            |
+
 
 ---
 
@@ -38,21 +41,29 @@ La normalización se llevó hasta **Quinta Forma Normal (5FN)**, garantizando qu
 
 ## Estructura del modelo relacional
 
-El modelo está compuesto por **22 tablas** organizadas en cinco grandes bloques:
+El modelo está compuesto por **24 tablas** organizadas en cinco grandes bloques:
 
-### 1. Bloque institucional (multi-tenant)
+### 1. Bloque de Catálogos (Normalización)
+
+- `pais`: Catálogo maestro de países (utilizado en universidad, editorial y autor).
+- `idioma`: Catálogo maestro de idiomas para los recursos.
+
+### 2. Bloque institucional (multi-tenant)
+
 - `universidad`: institución dueña de una o más bibliotecas.
 - `universidad_contacto`: contactos múltiples (teléfono, correo, web) de la universidad.
 - `biblioteca`: sede física donde se almacenan ejemplares.
 - `biblioteca_contacto`: contactos múltiples de la biblioteca.
 - `tipo_usuario`: parametriza reglas de préstamo, renovación y reserva.
 
-### 2. Bloque de usuarios
+### 3. Bloque de usuarios
+
 - `usuario`: estudiantes, docentes y personal administrativo.
 - `usuario_contacto`: contactos múltiples del usuario.
 
-### 3. Bloque de recursos bibliográficos
-- `recurso`: libro, revista, tesis, audiovisual o digital.
+### 4. Bloque de recursos bibliográficos
+
+- `recurso`: libro, revista, tesis, audiovisual o digital. Incluye flag `es_prestable`.
 - `categoria`: clasificación temática.
 - `editorial`: empresa publicadora.
 - `editorial_contacto`: contactos múltiples de la editorial.
@@ -61,13 +72,14 @@ El modelo está compuesto por **22 tablas** organizadas en cinco grandes bloques
 - `recurso_autor`: tabla intermedia muchos-a-muchos entre recurso y autor.
 - `recurso_idioma`: idiomas múltiples en que está disponible un recurso.
 - `recurso_formato_digital`: formatos digitales múltiples con su URL.
-- `ejemplar`: copia física o digital de un recurso.
+- `ejemplar`: copia física o digital de un recurso (incluye `volumen` y `numero_edicion` para revistas/periódicos).
 
-### 4. Bloque transaccional
+### 5. Bloque transaccional
+
 - `prestamo`: retiro de un ejemplar por un usuario.
-- `renovacion`: extensión del préstamo.
+- `renovacion`: extensión del préstamo (con flag `es_automatica`).
 - `devolucion`: entrega del ejemplar.
-- `reserva`: apartado de un recurso no disponible.
+- `reserva`: apartado de un recurso no disponible (con `id_biblioteca` para retiro).
 - `multa`: cargo por retraso o daño.
 
 ---
@@ -75,16 +87,20 @@ El modelo está compuesto por **22 tablas** organizadas en cinco grandes bloques
 ## Decisiones de diseño clave
 
 1. **Multi-tenant:** `id_universidad` aparece en `universidad`, `biblioteca`, `usuario` y `recurso`. Esto permite que varias universidades usen la misma plataforma con datos aislados.
-2. **Normalización hasta 5FN:** Se eliminaron dependencias transitivas, multivaluadas y de reunión. Por ejemplo:
-   - `multa` no guarda `id_usuario`; se obtiene vía `prestamo`.
-   - `prestamo` no guarda `id_biblioteca`; se obtiene vía `ejemplar`.
-   - Los contactos múltiples se separaron en tablas `*_contacto`.
-   - Los idiomas y formatos digitales se separaron en `recurso_idioma` y `recurso_formato_digital`.
-3. **Tabla intermedia `recurso_autor`:** Resuelve la relación muchos-a-muchos entre recursos y autores, con atributo `orden`.
-4. **Separación de `tipo_usuario`:** Evita repetir reglas de préstamo en cada usuario.
-5. **`rfid` en `ejemplar`:** Habilita autopréstamo y autorenovación.
-6. **`posicion_cola` en `reserva`:** Gestiona colas de reserva.
-7. **`devolucion` separada de `prestamo`:** Registra estado del ejemplar y biblioteca que recibe.
+2. **Normalización estricta (3FN/4FN):** Se crearon tablas maestras para `pais` e `idioma` para evitar redundancia de texto y errores tipográficos.
+3. **Normalización hasta 5FN:** Se eliminaron dependencias transitivas, multivaluadas y de reunión. Por ejemplo:4. `multa` no guarda `id_usuario`; se obtiene vía `prestamo`.
+5. `prestamo` no guarda `id_biblioteca`; se obtiene vía `ejemplar`.
+6. Los contactos múltiples se separaron en tablas `*_contacto`.
+7. **Requerimientos específicos del contexto:**
+8. **`es_prestable` en `recurso`:** Diferencia el material que se puede llevar a casa del material de consulta (solo sala).
+9. **`volumen` y `numero_edicion` en `ejemplar`:** Permite gestionar el préstamo de revistas y periódicos (publicaciones seriadas).
+10. **`es_automatica` en `renovacion`:** Habilita el requerimiento de auto-renovación de préstamos.
+11. **`id_biblioteca` en `reserva`:** Indica la sede física exacta donde el usuario debe recoger el recurso reservado.
+12. **Tabla intermedia `recurso_autor`:** Resuelve la relación muchos-a-muchos entre recursos y autores, con atributo `orden`.
+13. **`rfid` en `ejemplar`:** Habilita autopréstamo y autorenovación.
+14. **`posicion_cola` en `reserva`:** Gestiona colas de reserva.
+15. **`devolucion` separada de `prestamo`:** Registra estado del ejemplar y biblioteca que recibe.
+
 
 ---
 
@@ -93,5 +109,7 @@ El modelo está compuesto por **22 tablas** organizadas en cinco grandes bloques
 - Elmasri, R., & Navathe, S. (2016). *Fundamentals of Database Systems* (7th ed.). Pearson.
 - Silberschatz, A., Korth, H., & Sudarshan, S. (2019). *Database System Concepts* (7th ed.). McGraw-Hill.
 - Date, C. J. (2003). *An Introduction to Database Systems* (8th ed.). Addison-Wesley.
-- Documentación de Mermaid: https://mermaid.js.org/
-- Documentación de draw.io: https://www.diagrams.net/
+- Documentación de Mermaid: [https://mermaid.js.org/](https://mermaid.js.org/)
+- Documentación de draw.io: [https://www.diagrams.net/](https://www.diagrams.net/)
+
+ 
